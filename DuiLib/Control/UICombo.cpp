@@ -40,9 +40,9 @@ void CComboWnd::Init(CComboUI* pOwner)
     SIZE szDrop = m_pOwner->GetDropBoxSize();
     RECT rcOwner = pOwner->GetPos();
     RECT rc = rcOwner;
-    rc.top = rc.bottom;		// ¸¸´°¿Úleft¡¢bottomÎ»ÖÃ×÷Îªµ¯³ö´°¿ÚÆðµã
-    rc.bottom = rc.top + szDrop.cy;	// ¼ÆËãµ¯³ö´°¿Ú¸ß¶È
-    if( szDrop.cx > 0 ) rc.right = rc.left + szDrop.cx;	// ¼ÆËãµ¯³ö´°¿Ú¿í¶È
+    rc.top = rc.bottom;		// çˆ¶çª—å£leftã€bottomä½ç½®ä½œä¸ºå¼¹å‡ºçª—å£èµ·ç‚¹
+    rc.bottom = rc.top + szDrop.cy;	// è®¡ç®—å¼¹å‡ºçª—å£é«˜åº¦
+    if( szDrop.cx > 0 ) rc.right = rc.left + szDrop.cx;	// è®¡ç®—å¼¹å‡ºçª—å£å®½åº¦
 
     SIZE szAvailable = { rc.right - rc.left, rc.bottom - rc.top };
     int cyFixed = 0;
@@ -52,7 +52,7 @@ void CComboWnd::Init(CComboUI* pOwner)
         SIZE sz = pControl->EstimateSize(szAvailable);
         cyFixed += sz.cy;
     }
-    cyFixed += 4; // CVerticalLayoutUI Ä¬ÈÏµÄInset µ÷Õû
+    cyFixed += 4; // CVerticalLayoutUI é»˜è®¤çš„Inset è°ƒæ•´
     rc.bottom = rc.top + MIN(cyFixed, szDrop.cy);
 
     ::MapWindowRect(pOwner->GetManager()->GetPaintWindow(), HWND_DESKTOP, &rc);
@@ -281,7 +281,8 @@ bool CComboUI::SelectItem(int iIndex, bool bTakeFocus, bool bTriggerEvent)
     if( m_items.GetSize() == 0 ) return false;
     if( iIndex >= m_items.GetSize() ) iIndex = m_items.GetSize() - 1;
     CControlUI* pControl = static_cast<CControlUI*>(m_items[iIndex]);
-    if( !pControl || !pControl->IsVisible() || !pControl->IsEnabled() ) return false;
+    // æ­¤å¤„æ‰“å¼€åŽï¼Œå¦‚æžœcomboæŽ§ä»¶åœ¨tabsä¸­ï¼Œä¸åœ¨å½“å‰é¡µæ—¶ï¼Œæ— æ³•è®¾ç½®æŽ§ä»¶çš„é€‰å®šé¡¹
+    //if( !pControl || !pControl->IsVisible() || !pControl->IsEnabled() ) return false;
     IListItemUI* pListItem = static_cast<IListItemUI*>(pControl->GetInterface(_T("ListItem")));
     if( pListItem == NULL ) return false;
     m_iCurSel = iIndex;
